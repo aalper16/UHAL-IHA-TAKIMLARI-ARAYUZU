@@ -52,7 +52,7 @@ def safe_connect(connection_str, baud=115200, wait_ready=True):
     return vehicle
 
 
-
+#deneme
 #vehicle = connect('COM6', baud=57600, wait_ready=True, timeout=120, heartbeat_timeout=120)
 
 vehicle = safe_connect('tcp:127.0.0.1:5762')
