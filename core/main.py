@@ -100,7 +100,7 @@ elif vehicletype == 10:
     plane_img = Image.open('images/rover.png')
 
 
-
+ 
 
 #! PENCERE BAŞLATMA
 root = tk.Tk()
