@@ -1030,5 +1030,104 @@ def mainApp(addr):
 
     root.mainloop()
 
+def move_window(event):
+    starter.geometry(f'+{event.x_root}+{event.y_root}')
 
-mainApp('tcp:127.0.0.1:5762')
+starter = tk.Tk()
+starter.configure(bg="#202020")
+starter.overrideredirect(True)
+starter.geometry("400x260")
+starter.attributes('-topmost', True)
+
+# ---------------- TITLE BAR ----------------
+def move_window(event):
+    starter.geometry(f'+{event.x_root}+{event.y_root}')
+
+title_bar = tk.Frame(starter, bg='black', height=30)
+title_bar.pack(fill=tk.X)
+
+title_label = tk.Label(
+    title_bar,
+    text='CONNECT TO MAVLink VEHICLE',
+    bg='black',
+    fg='white'
+)
+title_label.pack(side=tk.LEFT, padx=10)
+
+close_button = tk.Button(
+    title_bar,
+    text='X',
+    bg='black',
+    fg='white',
+    bd=0,
+    command=starter.destroy
+)
+close_button.pack(side=tk.RIGHT, padx=10)
+
+title_bar.bind('<B1-Motion>', move_window)
+
+# ---------------- CONTENT ----------------
+content = tk.Frame(starter, bg='#2e2e2e')
+content.pack(expand=True, fill=tk.BOTH, padx=20, pady=20)
+
+# ADDRESS
+addr_label = tk.Label(
+    content,
+    text="Connection Address",
+    bg='#2e2e2e',
+    fg='white'
+)
+addr_label.pack(anchor='w')
+
+addr_entry = tk.Entry(content, font=('Helvetica', 14))
+addr_entry.pack(fill=tk.X, pady=5)
+
+# Varsayılan (örnekler)
+addr_entry.insert(0, "tcp:127.0.0.1:5762")
+# addr_entry.insert(0, "COM6")
+
+# BAUD
+baud_label = tk.Label(
+    content,
+    text="Baud Rate",
+    bg='#2e2e2e',
+    fg='white'
+)
+baud_label.pack(anchor='w', pady=(10, 0))
+
+baud_entry = tk.Entry(content, font=('Helvetica', 14))
+baud_entry.pack(fill=tk.X, pady=5)
+baud_entry.insert(0, "115200")
+
+# ---------------- CONNECT ACTION ----------------
+def connect_vehicle_ui():
+    addr = addr_entry.get().strip()
+    baud = baud_entry.get().strip()
+
+    if not addr or not baud:
+        messagebox.showerror("Error", "Address and baud rate required!")
+        return
+
+    try:
+        baud = int(baud)
+    except ValueError:
+        messagebox.showerror("Error", "Baud rate must be a number!")
+        return
+
+    starter.destroy()
+    # mainApp'i başlat
+    mainApp(addr)          # Eğer baud eklemek istersen aşağıyı kullan
+    # mainApp(addr, baud)
+
+# CONNECT BUTTON
+connect_btn = tk.Button(
+    content,
+    text="CONNECT",
+    bg="green",
+    fg="white",
+    font=("Helvetica", 14),
+    command=connect_vehicle_ui
+)
+connect_btn.pack(pady=20, fill=tk.X)
+
+starter.mainloop()
