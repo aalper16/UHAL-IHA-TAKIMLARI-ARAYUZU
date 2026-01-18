@@ -153,7 +153,7 @@ def mainApp(addr, baud):
                 now = time.time()
                 telem = get_telemetry()
                 if telem['roll'] > 55 and now - last_bank_alert > 2:
-                    engine.setProperty('voice', voices[1].id)  # erkek sesi
+                    engine.setProperty('voice', voices[0].id)  # erkek sesi
                     engine.setProperty('rate', 160)
                     engine.say("bank angle")
                     engine.runAndWait()
@@ -183,7 +183,8 @@ def mainApp(addr, baud):
                     last_bank_alert = now
 
                 if telem['speed'] <= 13 and telem['mode'] == 'MANUAL' or telem['mode'] == 'GUIDED' or telem['mode'] == 'STABILIZE' and telem['altitude'] >=5 and now - last_stall_alert > 3:
-
+                    engine.setProperty('voice', voices[0].id)
+                    engine.setProperty('rate', 160)
                     engine.say("stall")
                     engine.runAndWait()
                     time.sleep(1)
@@ -192,7 +193,8 @@ def mainApp(addr, baud):
                     last_stall_alert = now
                 
                 if telem['speed'] >= 40 and now - last_overspeed_alert > 3:
-
+                    engine.setProperty('voice', voices[0].id)
+                    engine.setProperty('rate', 160)
                     engine.say("over speed")
                     engine.runAndWait()
                     time.sleep(1)
@@ -236,11 +238,14 @@ def mainApp(addr, baud):
         try:
             if vehicle.armed == False:
                 vehicle.armed = True
+                engine.setProperty('voice', voices[0].id)
+                engine.setProperty('rate', 160)
                 engine.say("vehicle armed")
                 engine.runAndWait()
             elif vehicle.armed == True:
                 vehicle.armed = False
-
+                engine.setProperty('voice', voices[0].id)
+                engine.setProperty('rate', 160)
                 engine.say("vehicle disarmed")
                 engine.runAndWait()
         except Exception as e:
@@ -249,6 +254,8 @@ def mainApp(addr, baud):
     def emergency_rtl():
         try:
             change_mode('RTL')
+            engine.setProperty('voice', voices[0].id)
+            engine.setProperty('rate', 160)
             engine.say("emergency return to launch")
             engine.runAndWait()
         except Exception as e:
@@ -841,6 +848,8 @@ def mainApp(addr, baud):
     def apply_mode():
         selected_mode = modes_dropbox.get()    
         change_mode(selected_mode)
+        engine.setProperty('voice', voices[0].id)
+        engine.setProperty('rate', 160)
         engine.say(f"flight mode {selected_mode}")
         engine.runAndWait()
     mode_change_button = tk.Button(text='Change Mode', fg='white', bg="#494949", bd=5, relief='ridge', command=apply_mode)
@@ -860,6 +869,8 @@ def mainApp(addr, baud):
     height_entry.place(x=300, y=450)
     def button_action():
         change_alt(int(height_entry.get()))
+        engine.setProperty('voice', voices[0].id)
+        engine.setProperty('rate', 160)
         engine.say("changing altitude")
         engine.runAndWait()
         if int(height_entry.get()) <= 119:
@@ -884,6 +895,8 @@ def mainApp(addr, baud):
     speed_entry.place(x=300, y=550)
     def button_action():
         change_airspeed(int(speed_entry.get()))
+        engine.setProperty('voice', voices[0].id)
+        engine.setProperty('rate', 160)
         engine.say("changing speed")
         engine.runAndWait()
         if int(speed_entry.get()) <= 19:
@@ -960,6 +973,8 @@ def mainApp(addr, baud):
         if vmode == 'GUIDED':
             target_point = LocationGlobalRelative(lat,lon,valt)
             print('Hedefe gidiliyor...')
+            engine.setProperty('voice', voices[0].id)
+            engine.setProperty('rate', 160)
             engine.say("going to the target")
             engine.runAndWait()
             vehicle.simple_goto(target_point)
@@ -973,7 +988,8 @@ def mainApp(addr, baud):
             new_home = LocationGlobal(lat, lon, 0)
             vehicle.home_location = new_home
             print('Home konumu güncellendi!')
-
+            engine.setProperty('voice', voices[0].id)
+            engine.setProperty('rate', 160)
             engine.say("home point updated")
             engine.runAndWait()
         except Exception as e:
