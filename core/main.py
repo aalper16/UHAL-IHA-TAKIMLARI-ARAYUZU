@@ -55,6 +55,7 @@ def safe_connect(connection_str, baud=115200, wait_ready=True):
 
 #vehicle = connect('COM6', baud=57600, wait_ready=True, timeout=120, heartbeat_timeout=120)
 def mainApp(addr):
+    global marker, homepoint, marker_img, mapmarker, homepoint_img, homepoint_img_open, plane_img, vehicle, arm_title, altitude_title, mode_title, gps_fix_title, groundspeed_title, hud_base, battery_title, rc_roll_label
     vehicle = safe_connect('tcp:127.0.0.1:5762')
     counter_home = 0
     while vehicle.home_location is None:
@@ -155,7 +156,7 @@ def mainApp(addr):
                 now = time.time()
                 telem = get_telemetry()
                 if telem['roll'] > 55 and now - last_bank_alert > 2:
-                    engine.setProperty('voice', voices[1].id)  # erkek sesi
+                    engine.setProperty('voice', voices[23].id)  # erkek sesi
                     engine.setProperty('rate', 160)
                     speak("bank angle")
                     time.sleep(1)
