@@ -155,7 +155,7 @@ def check_audio_alerts():
             now = time.time()
             telem = get_telemetry()
             if telem['roll'] > 55 and now - last_bank_alert > 2:
-                engine.setProperty('voice', voices[23].id)  # erkek sesi
+                engine.setProperty('voice', voices[1].id)  # erkek sesi
                 engine.setProperty('rate', 160)
                 speak("bank angle")
                 time.sleep(1)
