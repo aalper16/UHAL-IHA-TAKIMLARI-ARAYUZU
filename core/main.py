@@ -39,11 +39,11 @@ def play_tone(frequency=440, duration=0.2, volume=1):
     # Sesin bitmesini bekle
     pygame.time.wait(int(duration * 1000))
 
-def safe_connect(connection_str, baud=115200, wait_ready=True):
+def safe_connect(connection_str, baud, wait_ready=True):
     vehicle = None
     while vehicle is None:
         try:
-            print(f"Bağlanmaya çalışılıyor: {connection_str}")
+            print(f"Bağlanmaya çalışılıyor: {connection_str}, {baud}")
             vehicle = connect(connection_str, baud=baud, wait_ready=wait_ready, timeout=30, heartbeat_timeout=30)
             print("Bağlantı başarılı!")
         except Exception as e:
@@ -54,9 +54,9 @@ def safe_connect(connection_str, baud=115200, wait_ready=True):
 
 
 #vehicle = connect('COM6', baud=57600, wait_ready=True, timeout=120, heartbeat_timeout=120)
-def mainApp(addr):
+def mainApp(addr, baud):
     global marker, homepoint, marker_img, mapmarker, homepoint_img, homepoint_img_open, plane_img, vehicle, arm_title, altitude_title, mode_title, gps_fix_title, groundspeed_title, hud_base, battery_title, rc_roll_label
-    vehicle = safe_connect(addr)
+    vehicle = safe_connect(addr, baud)
     counter_home = 0
     while vehicle.home_location is None:
         print('Home konumu bekleniyor...', vehicle.home_location)
@@ -1126,8 +1126,8 @@ def connect_vehicle_ui():
 
     starter.destroy()
     # mainApp'i başlat
-    mainApp(addr)          # Eğer baud eklemek istersen aşağıyı kullan
-    # mainApp(addr, baud)
+       # Eğer baud eklemek istersen aşağıyı kullan
+    mainApp(addr, baud)
 
 # CONNECT BUTTON
 connect_btn = tk.Button(
